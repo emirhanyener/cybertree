@@ -8,11 +8,18 @@ class lexeme_token
     string lexeme;
     string token;
 
+    lexeme_token(){
+        
+    }
     lexeme_token(string lexeme, string token){
         this->lexeme = lexeme;
         this->token = token;
     }
-    lexeme_token(){
-        
+
+    void setLexeme(string lexeme){
+        this->lexeme = lexeme;
+    }
+    void setToken(string token){
+        this->token = token;
     }
 };
