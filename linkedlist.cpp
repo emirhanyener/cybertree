@@ -1,32 +1,32 @@
 #include <iostream>
+#include <string>
 #include "node.cpp"
 
 using namespace std;
 
-template <class T>
 class linkedlist{
     public:
-    node<T> * first;
-    void push(T data){
-        node<T> * newnode = new node<T>();
-        newnode->data = data;
+    node * first;
+    void push(string lexeme, string token){
+        node * newnode = new node();
+        newnode->data = lexeme_token(lexeme, token);
         newnode->next = NULL;
 
         if(this->first == NULL){
             this->first = newnode;
         } else {
-            node<T> * temp = this->first;
+            node * temp = this->first;
             while(temp->next != NULL){
                 temp = temp->next;
             }
             temp->next = newnode;
         }
     }
-
     void print(){
-        node<T> * temp = this->first;
+        node * temp = this->first;
+        printf("\n");
         while(temp != NULL){
-            printf("%d\n", (temp->data));
+            printf("lexeme: %s,  token: %s\n", temp->data.lexeme.c_str(), temp->data.token.c_str());
             temp = temp->next;
         }
     }
