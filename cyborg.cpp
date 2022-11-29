@@ -1,39 +1,49 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "linkedlist.cpp"
 using namespace std;
   
 bool isKeyword(string);
 bool isOperator(string);
 bool isInteger(string);
 
+linkedlist * lexeme_token_list = new linkedlist();
+
 int main(int argc, char** argv)
 {
+  string sentence = "";
   string text;
   string lex = "";
+
   ifstream file("program.cy");
   while (getline (file, text)) {
     for(int i = 0; i <= text.length() - 1; i++){
       if(text[i] != ' ' && text[i] != '.' && text[i] != '\n' && text[i] != 0){
         lex+=text[i];
       }else{
-        if(isKeyword(lex))
-          cout << "\"" << lex << "\"" << " is a keyword" << "\n";
-        else if(isInteger(lex))
-          cout << "\"" << lex << "\"" << " is a integer" << "\n";
-        else if(isOperator(lex))
-          cout << "\"" << lex << "\"" << " is a operator" << "\n";
-        else
-          cout << "\"" << lex << "\"" << " is a not identified" << "\n";
+        if(isKeyword(lex)){
+          lexeme_token_list->push(lex, "Keyword");
+        }
+        else if(isInteger(lex)){
+          lexeme_token_list->push(lex, "Integer");
+        }
+        else if(isOperator(lex)){
+          lexeme_token_list->push(lex, "Operator");
+        }
+        else{
+          lexeme_token_list->push(lex, "Id");
+        }
 
         lex = "";
       }
       if(text[i] == '.'){
-        cout << "\".\" is a seperator" << "\n";
+        lexeme_token_list->push(lex, "Seperator");
       }
     }
   }
   file.close();
+  lexeme_token_list->print();
 
   return 0;
 }
