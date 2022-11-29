@@ -1,6 +1,7 @@
-template <class T>
+#include "lexeme_token.cpp"
+
 class node{
     public:
-    T data;
+    lexeme_token data;
     node * next;
 };
