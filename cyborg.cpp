@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "linkedlist.cpp"
+#include "lexeme_token_list/linkedlist.cpp"
 using namespace std;
   
 bool isKeyword(string);
@@ -15,8 +15,16 @@ int main(int argc, char** argv)
   string sentence = "";
   string text;
   string lex = "";
-
-  ifstream file("program.cy");
+  string filename = argv[1] + string(".cy");
+  ifstream fileexist(filename);
+  if (fileexist) {
+    fileexist.close();
+  } else {
+    cout << "\"" << argv[1] << "\" file doesn't exist";
+    return 0;
+  }
+  
+  ifstream file(filename);
   while (getline (file, text)) {
     for(int i = 0; i <= text.length() - 1; i++){
       if(text[i] != ' ' && text[i] != '.' && text[i] != '\n' && text[i] != 0){
