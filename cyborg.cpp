@@ -53,6 +53,12 @@ int main(int argc, char** argv)
   file.close();
   lexeme_token_list->print();
 
+  string cppfilename = argv[1] + string(".cpp");
+  ofstream MyFile(cppfilename);
+  MyFile << "#include <iostream>\nusing namespace std;\nint main(){\nreturn 0;\n}";
+
+  MyFile.close();
+
   return 0;
 }
 
