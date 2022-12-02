@@ -15,7 +15,7 @@ int main(int argc, char** argv)
   string sentence = "";
   string text;
   string lex = "";
-  string filename = argv[1] + string(".cy");
+  string filename = argv[1] + string(".leaf");
   ifstream fileexist(filename);
   if (fileexist) {
     fileexist.close();
@@ -52,13 +52,14 @@ int main(int argc, char** argv)
   }
   file.close();
   lexeme_token_list->print();
+  cout << "Lexical analysis completed" << endl;
 
+/*
   string cppfilename = argv[1] + string(".cpp");
-  ofstream MyFile(cppfilename);
-  MyFile << "#include <iostream>\nusing namespace std;\nint main(){\nreturn 0;\n}";
-
-  MyFile.close();
-
+  ofstream outputfile(cppfilename);
+  outputfile << "#include <iostream>\nusing namespace std;\nint main(){\nreturn 0;\n}";
+  outputfile.close();
+*/
   return 0;
 }
 
