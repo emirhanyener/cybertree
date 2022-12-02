@@ -22,9 +22,9 @@ class grammar{
         grammars[7] = "<string>:=<string> string";
         grammars[8] = "<string>:=string";
 
-        grammars[9] = "<math>:=id+id";
-        grammars[10] = "<math>:=id-id";
-        grammars[11] = "<math>:=id*id";
-        grammars[12] = "<math>:=id/id";
+        grammars[9] = "<math>:=integer+integer";
+        grammars[10] = "<math>:=integer-integer";
+        grammars[11] = "<math>:=integer*integer";
+        grammars[12] = "<math>:=integer/integer";
     }
 }
