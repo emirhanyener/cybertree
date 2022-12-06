@@ -4,27 +4,40 @@
 
 class grammar{
     public:
-    string grammars[13];
+    string grammars[13][2];
 
     grammar(){
-        grammars[0] = "<start>:=<exprlines>";
+        grammars[0][0] = "<start>";
+        grammars[0][1] = "<exprlines>";
 
-        grammars[1] = "<exprlines>:=<exprline><exprlines>";
-        grammars[2] = "<exprlines>:=";
+        grammars[1][0] = "<exprlines>";
+        grammars[1][1] = "<exprline><exprlines>";
+        grammars[2][0] = "<exprlines>";
+        grammars[2][1] = "";
 
-        grammars[3] = "<exprline>:=<expr>.";
+        grammars[3][0] = "<exprline>";
+        grammars[3][1] = "<expr>.";
 
-        grammars[4] = "<expr>:=<printexpr>";
+        grammars[4][0] = "<expr>";
+        grammars[4][1] = "<printexpr>";
 
-        grammars[5] = "<printexpr>:=print <string>";
-        grammars[6] = "<printexpr>:=print <math>";
+        grammars[5][0] = "<printexpr>";
+        grammars[5][1] = "print <string>";
+        grammars[6][0] = "<printexpr>";
+        grammars[6][1] = "print <math>";
 
-        grammars[7] = "<string>:=<string> string";
-        grammars[8] = "<string>:=string";
+        grammars[7][0] = "<string>";
+        grammars[7][1] = "id <string>";
+        grammars[8][0] = "<string>";
+        grammars[8][1] = "id";
 
-        grammars[9] = "<math>:=integer+integer";
-        grammars[10] = "<math>:=integer-integer";
-        grammars[11] = "<math>:=integer*integer";
-        grammars[12] = "<math>:=integer/integer";
+        grammars[9][0] = "<math>";
+        grammars[9][1] = "integer+integer";
+        grammars[10][0] = "<math>";
+        grammars[10][1] = "integer-integer";
+        grammars[11][0] = "<math>";
+        grammars[11][1] = "integer*integer";
+        grammars[12][0] = "<math>";
+        grammars[12][1] = "integer/integer";
     }
 }
