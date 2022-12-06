@@ -61,4 +61,12 @@ class grammar{
         grammars[12][1] = "integer/integer";
         ////////////////////////////////////////////////////////////////////////
     }
+
+    string check(string expr){
+        for(int i = 0; i < 13; i++){
+            if(grammars[i][1] == expr){
+                return grammars[i][0];
+            }
+        }
+    }
 }
