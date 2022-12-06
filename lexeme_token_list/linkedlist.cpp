@@ -26,7 +26,7 @@ class linkedlist{
         node * temp = this->first;
         printf("\n");
         while(temp != NULL){
-            printf("lexeme: %s,  token: %s\n", temp->data.lexeme.c_str(), temp->data.token.c_str());
+            printf("(%s \"%s\") ", temp->data.token.c_str(), temp->data.lexeme.c_str());
             temp = temp->next;
         }
     }
