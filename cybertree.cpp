@@ -7,6 +7,7 @@ using namespace std;
   
 bool isKeyword(string);
 bool isOperator(string);
+bool isSymbol(string);
 bool isInteger(string);
 
 linkedlist * lexeme_token_list = new linkedlist();
@@ -38,7 +39,7 @@ int main(int argc, char** argv)
         lex+=text[i];
       }else{
         if(isKeyword(lex)){
-          lexeme_token_list->push(lex, lex);
+          lexeme_token_list->push(lex, "keyword");
           lexical_text += lex + " ";
         }
         else if(isInteger(lex)){
@@ -47,6 +48,10 @@ int main(int argc, char** argv)
         }
         else if(isOperator(lex)){
           lexeme_token_list->push(lex, "operator");
+          lexical_text += lex + " ";
+        }
+        else if(isSymbol(lex)){
+          lexeme_token_list->push(lex, "symbol");
           lexical_text += lex + " ";
         }
         else{
@@ -59,6 +64,9 @@ int main(int argc, char** argv)
       if(text[i] == '.'){
         lexeme_token_list->push(".", ".");
           lexical_text += ". ";
+      }
+      else if(text[i] == '\"' || text[i] == '\''){
+        lexical_text += text[i] + " ";
       }
     }
   }
@@ -81,7 +89,6 @@ int main(int argc, char** argv)
     bool control = true;
     for (int left = 0; left < right; left++)
     {
-      cout << "sub(" << left << "," << right << "): " << all_text.substr(left, right - left) << endl;
       for(int i = 0; i < grammars->grammarNum; i++){
         if(grammars->getTerminal(i) == all_text.substr(left, right - left)){
           cout << "reduce = " << grammars->getNonTerminal(i) << "<--" << grammars->getTerminal(i) << endl;
@@ -135,6 +142,28 @@ bool isOperator(string lex){
   lex[0]=='-' || 
   lex[0]=='*' || 
   lex[0]=='/'
+  ){
+    return true;
+  }
+  return false;
+}
+bool isSymbol(string lex){
+  if(
+  lex[0]=='\"' || 
+  lex[0]=='\'' || 
+  lex[0]=='(' || 
+  lex[0]==')' ||
+  lex[0]==',' || 
+  lex[0]=='[' || 
+  lex[0]==']' || 
+  lex[0]=='{' || 
+  lex[0]=='}' || 
+  lex[0]=='$' || 
+  lex[0]=='%' || 
+  lex[0]=='!' || 
+  lex[0]=='?' || 
+  lex[0]=='<' || 
+  lex[0]=='>'
   ){
     return true;
   }
