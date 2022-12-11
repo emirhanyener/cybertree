@@ -79,6 +79,8 @@ int main(int argc, char** argv)
   //Lexical Analysis End
   ////////////////////////////////////////////////////////////////////////////
   //Syntax Analysis Start
+  
+  cout << endl << "----------Syntax Analysis Started----------";
   //shift reduce
   int right = 0;
   int left = 0;
@@ -110,8 +112,11 @@ int main(int argc, char** argv)
     }
   }
 
+  if(all_text == "<start> ")
+    cout << endl << "----------Syntax Analysis Completed----------";
+  else
+    cout << endl << "----------Syntax Error----------";
 
-  
   //Syntax Analysis End
 
   /*
