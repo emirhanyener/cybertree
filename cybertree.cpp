@@ -31,70 +31,78 @@ int main(int argc, char** argv)
   
   ifstream file(filename);
   
-  cout << endl << "----------Lexical Analysis Started----------";
+  cout << endl << "[Lexical Analysis Started]";
   while (getline (file, text)) {
     all_text += text;
     for(int i = 0; i <= text.length() - 1; i++){
-      if(text[i] != ' ' && text[i] != '.' && text[i] != '\n' && text[i] != 0){
-        lex+=text[i];
-      }else{
-        if(isKeyword(lex)){
-          lexeme_token_list->push(lex, "keyword");
-          lexical_text += lex + " ";
+      if(text[i] == ' ' || text[i] == '.' || text[i] == '\n' || text[i] == 0 || text[i] == '\"' || text[i] == '\''){
+        if(lex != ""){
+          if(isKeyword(lex)){
+            lexeme_token_list->push(lex, "keyword");
+            lexical_text += lex + " ";
+          }
+          else if(isInteger(lex)){
+            lexeme_token_list->push(lex, "integer");
+            lexical_text += "integer ";
+          }
+          else if(isOperator(lex)){
+            lexeme_token_list->push(lex, "operator");
+            lexical_text += lex + " ";
+          }
+          else if(isSymbol(lex)){
+            lexeme_token_list->push(lex, "symbol");
+            lexical_text += lex + " ";
+          }
+          else{
+            lexeme_token_list->push(lex, "id");
+            lexical_text += "id ";
+          }
         }
-        else if(isInteger(lex)){
-          lexeme_token_list->push(lex, "integer");
-          lexical_text += "integer ";
-        }
-        else if(isOperator(lex)){
-          lexeme_token_list->push(lex, "operator");
-          lexical_text += lex + " ";
-        }
-        else if(isSymbol(lex)){
-          lexeme_token_list->push(lex, "symbol");
-          lexical_text += lex + " ";
-        }
-        else{
-          lexeme_token_list->push(lex, "id");
-          lexical_text += "id ";
-        }
-
-        lex = "";
-      }
-      if(text[i] == '.'){
-        lexeme_token_list->push(".", ".");
+        
+        if(text[i] == '.'){
+          lexeme_token_list->push(".", ".");
           lexical_text += ". ";
-      }
-      else if(text[i] == '\"' || text[i] == '\''){
-        lexical_text += text[i] + " ";
+        }
+        if(text[i] == '\"'){
+          lexeme_token_list->push("\"", "\"");
+          lexical_text += "\" ";
+        }
+        if(text[i] == '\''){
+          lexeme_token_list->push("\'", "\'");
+          lexical_text += "\' ";
+        }
+        lex = "";
+      } else {
+        lex += text[i];
       }
     }
   }
   file.close();
   lexeme_token_list->print();
-  cout << endl << "----------Lexical Analysis Completed----------" << endl;
+  cout << endl;
   cout << lexical_text << endl;
+  cout << "[Lexical Analysis Completed]" << endl;
   all_text = lexical_text;
 
   //Lexical Analysis End
   ////////////////////////////////////////////////////////////////////////////
   //Syntax Analysis Start
   
-  cout << endl << "----------Syntax Analysis Started----------";
+  cout << endl << "[Syntax Analysis Started]";
   //shift reduce
   int right = 0;
   int left = 0;
   
   while (right < all_text.length())
   {
-    cout << "<--------------------------->" << endl << "stack=$" << all_text.substr(0, right) << endl;
+    cout << endl << "[stack=$" << all_text.substr(0, right) << "]";
     bool control = true;
     for (int left = 0; left < right; left++)
     {
       for(int i = 0; i < grammars->grammarNum; i++){
         if(grammars->getTerminal(i) == all_text.substr(left, right - left)){
-          cout << "reduce = " << grammars->getNonTerminal(i) << "<--" << grammars->getTerminal(i) << endl;
-          cout << "new text = " << all_text.substr(0, left) + grammars->getNonTerminal(i) + all_text.substr(right, all_text.length() - right) << endl;
+          cout << endl <<  "*reduce = " << grammars->getNonTerminal(i) << "<--" << grammars->getTerminal(i) << endl;
+          cout << "*new text = " << all_text.substr(0, left) + grammars->getNonTerminal(i) + all_text.substr(right, all_text.length() - right) << endl;
           all_text = all_text.substr(0, left) + grammars->getNonTerminal(i) + all_text.substr(right, all_text.length() - right);
           control = false;
           break;
@@ -113,9 +121,9 @@ int main(int argc, char** argv)
   }
 
   if(all_text == "<start> ")
-    cout << endl << "----------Syntax Analysis Completed----------";
+    cout << endl << "[s][Syntax Analysis Completed]" << endl;
   else
-    cout << endl << "----------Syntax Error----------";
+    cout << endl << "[f][Syntax Error]" << endl;
 
   //Syntax Analysis End
 
