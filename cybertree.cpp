@@ -16,26 +16,26 @@ linkedlist<grammar *> * grammars = new linkedlist<grammar *>();
 
 int main(int argc, char** argv)
 {
-  grammars->push(new grammar("<start>", "<exprlines>"));
-  grammars->push(new grammar("<exprlines>", "<exprlines> <exprlines>"));
-  grammars->push(new grammar("<exprlines>", "<exprline>"));
-  grammars->push(new grammar("<exprline>", "<expr> ."));
-  grammars->push(new grammar("<expr>", "<printexpr>"));
-  grammars->push(new grammar("<printexpr>", "print <stringexpr>"));
-  grammars->push(new grammar("<printexpr>", "print <math>"));
-  grammars->push(new grammar("<stringexpr>", "\" <string> \""));
-  grammars->push(new grammar("<string>", "<string> <string>"));
-  grammars->push(new grammar("<string>", "id"));
-  grammars->push(new grammar("<math>", "integer + integer"));
-  grammars->push(new grammar("<math>", "integer - integer"));
-  grammars->push(new grammar("<math>", "integer * integer"));
-  grammars->push(new grammar("<math>", "integer / integer"));
-  grammars->push(new grammar("<printexpr>", "<printexpr> <string>"));
+  grammars->push(new grammar((char *)"<start>", (char *)"<exprlines>"));
+  grammars->push(new grammar((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
+  grammars->push(new grammar((char *)"<exprlines>", (char *)"<exprline>"));
+  grammars->push(new grammar((char *)"<exprline>", (char *)"<expr> ."));
+  grammars->push(new grammar((char *)"<expr>", (char *)"<printexpr>"));
+  grammars->push(new grammar((char *)"<printexpr>", (char *)"print <stringexpr>"));
+  grammars->push(new grammar((char *)"<printexpr>", (char *)"print <math>"));
+  grammars->push(new grammar((char *)"<stringexpr>", (char *)"\" <string> \""));
+  grammars->push(new grammar((char *)"<string>", (char *)"<string> <string>"));
+  grammars->push(new grammar((char *)"<string>", (char *)"id"));
+  grammars->push(new grammar((char *)"<math>", (char *)"integer + integer"));
+  grammars->push(new grammar((char *)"<math>", (char *)"integer - integer"));
+  grammars->push(new grammar((char *)"<math>", (char *)"integer * integer"));
+  grammars->push(new grammar((char *)"<math>", (char *)"integer / integer"));
+  grammars->push(new grammar((char *)"<printexpr>", (char *)"<printexpr> <string>"));
   if(string(argv[1]) == "grammar"){
-    grammars->firstNode();
-    while(grammars->nextNode()){
+    do{
         cout << "[" << grammars->next->data->nonTerminal << "::=" << grammars->next->data->terminal << "]" << endl;
     }
+    while(grammars->nextNode());
     return 0;
   }
         
@@ -124,7 +124,7 @@ int main(int argc, char** argv)
     bool control = true;
     for (int left = 0; left < right; left++)
     {
-      while(grammars->nextNode()){
+      do{
         if(grammars->next->data->terminal == all_text.substr(left, right - left)){
           cout << endl <<  "*reduce = " << grammars->next->data->nonTerminal << "<--" << grammars->next->data->terminal << endl;
           cout << "*new text = " << all_text.substr(0, left) + grammars->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
@@ -132,7 +132,7 @@ int main(int argc, char** argv)
           control = false;
           break;
         }
-      }
+      }while(grammars->nextNode());
       grammars->firstNode();
       if(!control){
         break;
