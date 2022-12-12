@@ -8,6 +8,7 @@ template <typename T>
 class linkedlist{
     public:
     node<T> * first;
+    node<T> * next;
     void push(T data){
         node<T> * newnode = new node<T>();
         newnode->data = data;
@@ -15,6 +16,7 @@ class linkedlist{
 
         if(this->first == NULL){
             this->first = newnode;
+            this->next = newnode;
         } else {
             node<T> * temp = this->first;
             while(temp->next != NULL){
@@ -23,11 +25,14 @@ class linkedlist{
             temp->next = newnode;
         }
     }
-    void print(){
-        node<T> * temp = this->first;
-        while(temp != NULL){
-            cout << temp->data << endl;
-            temp = temp->next;
-        }
+    bool nextNode(){
+        if(this->next->next != NULL){
+            this->next = this->next->next;
+            return true;
+        } 
+        return false;
+    }
+    void firstNode(){
+        this->next = this->first;
     }
 };
