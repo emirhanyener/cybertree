@@ -2,15 +2,17 @@
 #include <fstream>
 #include <string>
 
-class grammar{
-    public:
-    char * terminal;
-    char * nonTerminal;
+class grammar
+{
+public:
+    char *terminal;
+    char *nonTerminal;
 
-    grammar(){
-        
+    grammar()
+    {
     }
-    grammar(char * nonTerminal, char * terminal){
+    grammar(char *nonTerminal, char *terminal)
+    {
         this->terminal = terminal;
         this->nonTerminal = nonTerminal;
     }

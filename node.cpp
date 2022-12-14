@@ -1,6 +1,7 @@
 template <typename T>
-class node{
-    public:
+class node
+{
+public:
     T data;
-    node * next;
+    node *next;
 };

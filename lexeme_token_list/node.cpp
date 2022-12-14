@@ -1,7 +1,8 @@
 #include "lexeme_token.cpp"
 
-class node{
-    public:
+class node
+{
+public:
     lexeme_token data;
-    node * next;
+    node *next;
 };
