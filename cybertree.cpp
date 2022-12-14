@@ -18,6 +18,7 @@ int main(int argc, char **argv)
 {
   //grammar
   grammar->push(new grammarNode((char *)"<start>", (char *)"<exprlines>"));
+  grammar->push(new grammarNode((char *)"<start>", (char *)"<start> <start>"));
   grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
   grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprline>"));
   grammar->push(new grammarNode((char *)"<exprline>", (char *)"<expr> ."));
