@@ -3,7 +3,7 @@
 #include <string>
 // #include "lexeme_token_list/linkedlist.cpp"
 #include "linkedlist.cpp"
-#include "grammar.cpp"
+#include "grammarNode.cpp"
 using namespace std;
 
 bool isKeyword(string);
@@ -12,35 +12,38 @@ bool isSymbol(string);
 bool isInteger(string);
 
 // linkedlist * lexeme_token_list = new linkedlist();
-linkedlist<grammar *> *grammars = new linkedlist<grammar *>();
+linkedlist<grammarNode *> * grammar = new linkedlist<grammarNode *>();
 
 int main(int argc, char **argv)
 {
-  grammars->push(new grammar((char *)"<start>", (char *)"<exprlines>"));
-  grammars->push(new grammar((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
-  grammars->push(new grammar((char *)"<exprlines>", (char *)"<exprline>"));
-  grammars->push(new grammar((char *)"<exprline>", (char *)"<expr> ."));
-  grammars->push(new grammar((char *)"<expr>", (char *)"<printexpr>"));
-  grammars->push(new grammar((char *)"<printexpr>", (char *)"print <stringexpr>"));
-  grammars->push(new grammar((char *)"<printexpr>", (char *)"print <math>"));
-  grammars->push(new grammar((char *)"<stringexpr>", (char *)"\" <string> \""));
-  grammars->push(new grammar((char *)"<string>", (char *)"<string> <string>"));
-  grammars->push(new grammar((char *)"<string>", (char *)"id"));
-  grammars->push(new grammar((char *)"<math>", (char *)"integer + integer"));
-  grammars->push(new grammar((char *)"<math>", (char *)"integer - integer"));
-  grammars->push(new grammar((char *)"<math>", (char *)"integer * integer"));
-  grammars->push(new grammar((char *)"<math>", (char *)"integer / integer"));
-  grammars->push(new grammar((char *)"<printexpr>", (char *)"<printexpr> <string>"));
+  //grammar
+  grammar->push(new grammarNode((char *)"<start>", (char *)"<exprlines>"));
+  grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
+  grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprline>"));
+  grammar->push(new grammarNode((char *)"<exprline>", (char *)"<expr> ."));
+  grammar->push(new grammarNode((char *)"<expr>", (char *)"<printexpr>"));
+  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
+  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <math>"));
+  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"<printexpr> <string>"));
+  grammar->push(new grammarNode((char *)"<string>", (char *)"<string> <string>"));
+  grammar->push(new grammarNode((char *)"<string>", (char *)"id"));
+  grammar->push(new grammarNode((char *)"<stringexpr>", (char *)"\" <string> \""));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"integer + integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"integer - integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"integer * integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"integer / integer"));
+
   if (string(argv[1]) == "grammar")
   {
     do
     {
-      cout << "[" << grammars->next->data->nonTerminal << "::=" << grammars->next->data->terminal << "]" << endl;
-    } while (grammars->nextNode());
+      cout << "[" << grammar->next->data->nonTerminal << "::=" << grammar->next->data->terminal << "]" << endl;
+    } while (grammar->nextNode());
     return 0;
   }
 
   // Lexical Analysis Start
+  bool is_string = false;
   string all_text = "";
   string lexical_text = "";
   string text;
@@ -70,7 +73,11 @@ int main(int argc, char **argv)
       {
         if (lex != "")
         {
-          if (isKeyword(lex))
+          if(is_string)
+          {
+            lexical_text += "id ";
+          }
+          else if (isKeyword(lex))
           {
             // lexeme_token_list->push(lex, "keyword");
             lexical_text += lex + " ";
@@ -106,6 +113,7 @@ int main(int argc, char **argv)
         {
           // lexeme_token_list->push("\"", "\"");
           lexical_text += "\" ";
+          is_string = !is_string;
         }
         if (text[i] == '\'')
         {
@@ -146,17 +154,17 @@ int main(int argc, char **argv)
     {
       do
       {
-        if (grammars->next->data->terminal == all_text.substr(left, right - left))
+        if (grammar->next->data->terminal == all_text.substr(left, right - left))
         {
           cout << endl
-               << "*reduce = " << grammars->next->data->nonTerminal << "<--" << grammars->next->data->terminal << endl;
-          cout << "*new text = " << all_text.substr(0, left) + grammars->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
-          all_text = all_text.substr(0, left) + grammars->next->data->nonTerminal + all_text.substr(right, all_text.length() - right);
+               << "*reduce = " << grammar->next->data->nonTerminal << "<--" << grammar->next->data->terminal << endl;
+          cout << "*new text = " << all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
+          all_text = all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right);
           control = false;
           break;
         }
-      } while (grammars->nextNode());
-      grammars->firstNode();
+      } while (grammar->nextNode());
+      grammar->firstNode();
       if (!control)
       {
         break;

@@ -2,16 +2,16 @@
 #include <fstream>
 #include <string>
 
-class grammar
+class grammarNode
 {
 public:
     char *terminal;
     char *nonTerminal;
 
-    grammar()
+    grammarNode()
     {
     }
-    grammar(char *nonTerminal, char *terminal)
+    grammarNode(char *nonTerminal, char *terminal)
     {
         this->terminal = terminal;
         this->nonTerminal = nonTerminal;
