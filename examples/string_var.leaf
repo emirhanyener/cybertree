@@ -1,0 +1,3 @@
+create c var.
+assign "hello world" to c var.
+print c var.
