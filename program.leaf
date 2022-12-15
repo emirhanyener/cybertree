@@ -1,2 +1,2 @@
 print "print hello world" 3 times.
-print 3 + 4 - 2.
+print (3 + 4 - 2).

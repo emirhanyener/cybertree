@@ -25,11 +25,18 @@ int main(int argc, char **argv)
   grammar->push(new grammarNode((char *)"<expr>", (char *)"<expr> integer times"));
   grammar->push(new grammarNode((char *)"<expr>", (char *)"<printexpr>"));
   grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
-  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <math>"));
+  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <mathexpr>"));
   grammar->push(new grammarNode((char *)"<printexpr>", (char *)"<printexpr> <string>"));
   grammar->push(new grammarNode((char *)"<string>", (char *)"<string> <string>"));
   grammar->push(new grammarNode((char *)"<string>", (char *)"id"));
   grammar->push(new grammarNode((char *)"<stringexpr>", (char *)"\" <string> \""));
+
+  grammar->push(new grammarNode((char *)"<mathexpr>", (char *)"( <math> )"));
+
+  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> + integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> - integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> * integer"));
+  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> / integer"));
   grammar->push(new grammarNode((char *)"<math>", (char *)"integer + integer"));
   grammar->push(new grammarNode((char *)"<math>", (char *)"integer - integer"));
   grammar->push(new grammarNode((char *)"<math>", (char *)"integer * integer"));
@@ -71,7 +78,7 @@ int main(int argc, char **argv)
     all_text += text;
     for (int i = 0; i <= text.length() - 1; i++)
     {
-      if (text[i] == ' ' || text[i] == '.' || text[i] == '\n' || text[i] == 0 || text[i] == '\"' || text[i] == '\'')
+      if (text[i] == ' ' || text[i] == '.' || text[i] == '\n' || text[i] == 0 || text[i] == '\"' || text[i] == '\'' || text[i] == '(' || text[i] == ')')
       {
         if (lex != "")
         {
@@ -111,16 +118,26 @@ int main(int argc, char **argv)
           // lexeme_token_list->push(".", ".");
           lexical_text += ". ";
         }
-        if (text[i] == '\"')
+        else if (text[i] == '\"')
         {
           // lexeme_token_list->push("\"", "\"");
           lexical_text += "\" ";
           is_string = !is_string;
         }
-        if (text[i] == '\'')
+        else if (text[i] == '\'')
         {
           // lexeme_token_list->push("\'", "\'");
           lexical_text += "\' ";
+        }
+        else if (text[i] == '(')
+        {
+          // lexeme_token_list->push("\'", "\'");
+          lexical_text += "( ";
+        }
+        else if (text[i] == ')')
+        {
+          // lexeme_token_list->push("\'", "\'");
+          lexical_text += ") ";
         }
         lex = "";
       }
