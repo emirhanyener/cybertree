@@ -1,0 +1,5 @@
+create a var.
+create b var.
+assign 100 to a var.
+assign 150 to b var.
+assign a + b to a var.
