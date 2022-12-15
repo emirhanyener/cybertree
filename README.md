@@ -3,49 +3,30 @@
 `cybertree` is a programming language like natural language. 
 
 ## Grammar
+```cybertree
 <start>      ::= <exprlines>
-
 <start>      ::= <start> <start>
-
 <exprlines>  ::= <exprlines> <exprlines>
-
 <exprlines>  ::= <exprline>
-
 <exprline>   ::= <expr> .
-
 <expr>       ::= <expr> integer times
-
 <expr>       ::= <printexpr>
-
 <printexpr>  ::= print <stringexpr>
-
 <printexpr>  ::= print <mathexpr>
-
 <printexpr>  ::= <printexpr> <string>
-
 <string>     ::= <string> <string>
-
 <string>     ::= id
-
 <stringexpr> ::= " <string> "
-
 <mathexpr>   ::= ( <math> )
-
 <math>       ::= <math> + integer
-
 <math>       ::= <math> - integer
-
 <math>       ::= <math> * integer
-
 <math>       ::= <math> / integer
-
 <math>       ::= integer + integer
-
 <math>       ::= integer - integer
-
 <math>       ::= integer * integer
-
 <math>       ::= integer / integer
+```
 
 ## Syntax
 ### Print expr
