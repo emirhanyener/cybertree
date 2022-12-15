@@ -2,18 +2,16 @@
 #include <fstream>
 #include <string>
 
-class grammarNode
+struct grammarNode
 {
-public:
-    char *terminal;
-    char *nonTerminal;
-
-    grammarNode()
-    {
-    }
-    grammarNode(char *nonTerminal, char *terminal)
-    {
-        this->terminal = terminal;
-        this->nonTerminal = nonTerminal;
-    }
+    char * terminal;
+    char * nonTerminal;
 };
+
+grammarNode * createGrammarNode(char *nonTerminal, char *terminal)
+{
+    grammarNode * newNode = (struct grammarNode *) malloc (sizeof(struct grammarNode));
+    newNode->terminal = terminal;
+    newNode->nonTerminal = nonTerminal;
+    return newNode;
+}

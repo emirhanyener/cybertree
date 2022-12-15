@@ -17,30 +17,30 @@ linkedlist<grammarNode *> * grammar = new linkedlist<grammarNode *>();
 int main(int argc, char **argv)
 {
   //grammar
-  grammar->push(new grammarNode((char *)"<start>", (char *)"<exprlines>"));
-  grammar->push(new grammarNode((char *)"<start>", (char *)"<start> <start>"));
-  grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
-  grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprline>"));
-  grammar->push(new grammarNode((char *)"<exprline>", (char *)"<expr> ."));
-  grammar->push(new grammarNode((char *)"<expr>", (char *)"<expr> integer times"));
-  grammar->push(new grammarNode((char *)"<expr>", (char *)"<printexpr>"));
-  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
-  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <mathexpr>"));
-  grammar->push(new grammarNode((char *)"<printexpr>", (char *)"<printexpr> <string>"));
-  grammar->push(new grammarNode((char *)"<string>", (char *)"<string> <string>"));
-  grammar->push(new grammarNode((char *)"<string>", (char *)"id"));
-  grammar->push(new grammarNode((char *)"<stringexpr>", (char *)"\" <string> \""));
+  grammar->push(createGrammarNode((char *)"<start>", (char *)"<exprlines>"));
+  grammar->push(createGrammarNode((char *)"<start>", (char *)"<start> <start>"));
+  grammar->push(createGrammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
+  grammar->push(createGrammarNode((char *)"<exprlines>", (char *)"<exprline>"));
+  grammar->push(createGrammarNode((char *)"<exprline>", (char *)"<expr> ."));
+  grammar->push(createGrammarNode((char *)"<expr>", (char *)"<expr> integer times"));
+  grammar->push(createGrammarNode((char *)"<expr>", (char *)"<printexpr>"));
+  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
+  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"print <mathexpr>"));
+  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"<printexpr> <string>"));
+  grammar->push(createGrammarNode((char *)"<string>", (char *)"<string> <string>"));
+  grammar->push(createGrammarNode((char *)"<string>", (char *)"id"));
+  grammar->push(createGrammarNode((char *)"<stringexpr>", (char *)"\" <string> \""));
 
-  grammar->push(new grammarNode((char *)"<mathexpr>", (char *)"( <math> )"));
+  grammar->push(createGrammarNode((char *)"<mathexpr>", (char *)"( <math> )"));
 
-  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> + integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> - integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> * integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"<math> / integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"integer + integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"integer - integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"integer * integer"));
-  grammar->push(new grammarNode((char *)"<math>", (char *)"integer / integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> + integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> - integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> * integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> / integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer + integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer - integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer * integer"));
+  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer / integer"));
 
   if (string(argv[1]) == "grammar")
   {
