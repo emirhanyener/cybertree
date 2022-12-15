@@ -22,6 +22,7 @@ int main(int argc, char **argv)
   grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
   grammar->push(new grammarNode((char *)"<exprlines>", (char *)"<exprline>"));
   grammar->push(new grammarNode((char *)"<exprline>", (char *)"<expr> ."));
+  grammar->push(new grammarNode((char *)"<expr>", (char *)"<expr> integer times"));
   grammar->push(new grammarNode((char *)"<expr>", (char *)"<printexpr>"));
   grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
   grammar->push(new grammarNode((char *)"<printexpr>", (char *)"print <math>"));
@@ -149,7 +150,7 @@ int main(int argc, char **argv)
   while (right < all_text.length())
   {
     cout << endl
-         << "[stack=$" << all_text.substr(0, right) << "]";
+         << "[Stack=$" << all_text.substr(0, right) << "]";
     bool control = true;
     for (int left = 0; left < right; left++)
     {
@@ -158,8 +159,8 @@ int main(int argc, char **argv)
         if (grammar->next->data->terminal == all_text.substr(left, right - left))
         {
           cout << endl
-               << "*reduce = " << grammar->next->data->nonTerminal << "<--" << grammar->next->data->terminal << endl;
-          cout << "*new text = " << all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
+               << "*Reduce = " << grammar->next->data->nonTerminal << " <-- " << grammar->next->data->terminal << endl;
+          cout << "*New Text = " << all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
           all_text = all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right);
           control = false;
           break;
@@ -184,7 +185,7 @@ int main(int argc, char **argv)
 
   if (all_text == "<start> ")
     cout << endl
-         << "[s][Syntax Analysis Completed]" << endl;
+         << "[s][Syntax Analysis Success]" << endl;
   else
     cout << endl
          << "[f][Syntax Error]" << endl;
