@@ -18,6 +18,8 @@ grammar_list * grammar = NULL;
 int main(int argc, char **argv)
 {
   grammar = (struct grammar_list *) malloc (sizeof(struct grammar_list));
+  grammar->first = NULL;
+  grammar->next = NULL;
   cout << "open success" << endl;
   //grammar
   grammarListPush(grammar, createGrammarNodeData((char *)"<start>", (char *)"<exprlines>"));
