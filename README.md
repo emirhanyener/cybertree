@@ -1,9 +1,10 @@
-# cybertree
+# CyberTree
 ## About
 `cybertree` is a programming language like natural language. 
 
-## Grammar
-```cybertree
+## Syntax
+### Grammar (Backus-Naur Form)
+```grammar
 <start>      ::= <exprlines>
 <start>      ::= <start> <start>
 <exprlines>  ::= <exprlines> <exprlines>
@@ -28,7 +29,6 @@
 <math>       ::= integer / integer
 ```
 
-## Syntax
 ### Print expr
 ```cybertree
 print "print hello world" 3 times.
@@ -37,6 +37,7 @@ print (3 + 4 - 2).
 
 ## Technologies
 - C++
+- C
 
 ## License
 [MIT](LICENSE)
