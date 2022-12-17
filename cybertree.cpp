@@ -2,8 +2,9 @@
 #include <fstream>
 #include <string>
 // #include "lexeme_token_list/linkedlist.cpp"
-#include "linkedlist.cpp"
-#include "grammarNode.cpp"
+#include "grammar_node_data.c"
+#include "grammar_node.c"
+#include "grammar_list.c"
 using namespace std;
 
 bool isKeyword(string);
@@ -12,42 +13,45 @@ bool isSymbol(string);
 bool isInteger(string);
 
 // linkedlist * lexeme_token_list = new linkedlist();
-linkedlist<grammarNode *> * grammar = new linkedlist<grammarNode *>();
+grammar_list * grammar = NULL;
 
 int main(int argc, char **argv)
 {
+  grammar = (struct grammar_list *) malloc (sizeof(struct grammar_list));
+  cout << "open success" << endl;
   //grammar
-  grammar->push(createGrammarNode((char *)"<start>", (char *)"<exprlines>"));
-  grammar->push(createGrammarNode((char *)"<start>", (char *)"<start> <start>"));
-  grammar->push(createGrammarNode((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
-  grammar->push(createGrammarNode((char *)"<exprlines>", (char *)"<exprline>"));
-  grammar->push(createGrammarNode((char *)"<exprline>", (char *)"<expr> ."));
-  grammar->push(createGrammarNode((char *)"<expr>", (char *)"<expr> integer times"));
-  grammar->push(createGrammarNode((char *)"<expr>", (char *)"<printexpr>"));
-  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"print <stringexpr>"));
-  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"print <mathexpr>"));
-  grammar->push(createGrammarNode((char *)"<printexpr>", (char *)"<printexpr> <string>"));
-  grammar->push(createGrammarNode((char *)"<string>", (char *)"<string> <string>"));
-  grammar->push(createGrammarNode((char *)"<string>", (char *)"id"));
-  grammar->push(createGrammarNode((char *)"<stringexpr>", (char *)"\" <string> \""));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<start>", (char *)"<exprlines>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<start>", (char *)"<start> <start>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<exprlines>", (char *)"<exprline>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<exprline>", (char *)"<expr> ."));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<expr>", (char *)"<expr> integer times"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<expr>", (char *)"<printexpr>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"print <stringexpr>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"print <mathexpr>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"<printexpr> <string>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<string>", (char *)"<string> <string>"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<string>", (char *)"id"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<stringexpr>", (char *)"\" <string> \""));
 
-  grammar->push(createGrammarNode((char *)"<mathexpr>", (char *)"( <math> )"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<mathexpr>", (char *)"( <math> )"));
 
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> + integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> - integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> * integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"<math> / integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer + integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer - integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer * integer"));
-  grammar->push(createGrammarNode((char *)"<math>", (char *)"integer / integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"<math> + integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"<math> - integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"<math> * integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"<math> / integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer + integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer - integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer * integer"));
+  grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer / integer"));
 
+  cout << "grammar success" << endl;
   if (string(argv[1]) == "grammar")
   {
     do
     {
       cout << "[" << grammar->next->data->nonTerminal << "::=" << grammar->next->data->terminal << "]" << endl;
-    } while (grammar->nextNode());
+    } while (grammarListNextNode(grammar));
     return 0;
   }
 
@@ -70,6 +74,7 @@ int main(int argc, char **argv)
   }
 
   ifstream file(filename);
+  cout << "file success" << endl;
 
   cout << endl
        << "[Lexical Analysis Started]";
@@ -182,8 +187,8 @@ int main(int argc, char **argv)
           control = false;
           break;
         }
-      } while (grammar->nextNode());
-      grammar->firstNode();
+      } while (grammarListNextNode(grammar));
+      grammarListFirstNode(grammar);
       if (!control)
       {
         break;
