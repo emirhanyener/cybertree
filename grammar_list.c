@@ -23,7 +23,6 @@ void grammarListPush(grammar_list * list, grammar_node_data * data)
         grammar_node * temp_grammar = list->first;
         while (temp_grammar->next != NULL)
         {
-            printf("%s\n", temp_grammar->data->terminal);
             temp_grammar = temp_grammar->next;
         }
         temp_grammar->next = newnode;
