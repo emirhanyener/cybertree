@@ -1,18 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <iostream>
 #include <fstream>
-#include <string>
-// #include "lexeme_token_list/linkedlist.cpp"
 #include "grammar_node_data.c"
 #include "grammar_node.c"
 #include "grammar_list.c"
+#include "char_pointer_functions/append_charpointer.h"
+#include "char_pointer_functions/sub_charpointer.h"
 using namespace std;
 
-bool isKeyword(string);
-bool isOperator(string);
-bool isSymbol(string);
-bool isInteger(string);
+bool isKeyword(char *);
+bool isOperator(char *);
+bool isSymbol(char *);
+bool isInteger(char *);
 
-// linkedlist * lexeme_token_list = new linkedlist();
 grammar_list * grammar = NULL;
 
 int main(int argc, char **argv)
@@ -20,18 +22,21 @@ int main(int argc, char **argv)
   grammar = (struct grammar_list *) malloc (sizeof(struct grammar_list));
   grammar->first = NULL;
   grammar->next = NULL;
-  cout << "open success" << endl;
   //grammar
   grammarListPush(grammar, createGrammarNodeData((char *)"<start>", (char *)"<exprlines>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<start>", (char *)"<start> <start>"));
+  
   grammarListPush(grammar, createGrammarNodeData((char *)"<exprlines>", (char *)"<exprlines> <exprlines>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<exprlines>", (char *)"<exprline>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<exprline>", (char *)"<expr> ."));
+
   grammarListPush(grammar, createGrammarNodeData((char *)"<expr>", (char *)"<expr> integer times"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<expr>", (char *)"<printexpr>"));
+
   grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"print <stringexpr>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"print <mathexpr>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<printexpr>", (char *)"<printexpr> <string>"));
+
   grammarListPush(grammar, createGrammarNodeData((char *)"<string>", (char *)"<string> <string>"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<string>", (char *)"id"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<stringexpr>", (char *)"\" <string> \""));
@@ -47,145 +52,151 @@ int main(int argc, char **argv)
   grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer * integer"));
   grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer / integer"));
 
-  cout << "grammar success" << endl;
+  printf("grammar success\n");
   if (string(argv[1]) == "grammar")
   {
     do
     {
-      cout << "[" << grammar->next->data->nonTerminal << "::=" << grammar->next->data->terminal << "]" << endl;
+      printf("[%s::=%s]\n", grammar->next->data->nonTerminal, grammar->next->data->terminal);
     } while (grammarListNextNode(grammar));
     return 0;
   }
 
   // Lexical Analysis Start
   bool is_string = false;
-  string all_text = "";
-  string lexical_text = "";
-  string text;
-  string lex = "";
-  string filename = argv[1] + string(".leaf");
-  ifstream fileexist(filename);
-  if (fileexist)
-  {
-    fileexist.close();
-  }
-  else
-  {
-    cout << "\"" << argv[1] << "\" file doesn't exist";
-    return 0;
-  }
+  char * lexical_text = "";
+  char * lex = "";
+  char * filename = "";
+  filename = append(argv[1], ".leaf");
 
-  ifstream file(filename);
-  cout << "file success" << endl;
+//////////////////////////////////////////////////////////////////////////////
+  FILE* fptr;
+  char ch;
+	char * all_text = "";
+  fptr = fopen("test.leaf", "r");
+  if (NULL == fptr) {
+      printf("file can't be opened \n");
+      return 0;
+  }
+//////////////////////////////////////////////////////////////////////////////
 
-  cout << endl
-       << "[Lexical Analysis Started]";
-  while (getline(file, text))
-  {
-    all_text += text;
-    for (int i = 0; i <= text.length() - 1; i++)
-    {
-      if (text[i] == ' ' || text[i] == '.' || text[i] == '\n' || text[i] == 0 || text[i] == '\"' || text[i] == '\'' || text[i] == '(' || text[i] == ')')
+  printf("file success\n");
+
+  printf("\n[Lexical Analysis Started]");
+  
+  do {
+      ch = fgetc(fptr);
+      all_text = appendc(all_text, ch);
+      if (ch == ' ' || ch == '.' || ch == '\n' || ch == 0 || ch == '\"' || ch == '\'' || ch == '(' || ch == ')')
       {
         if (lex != "")
         {
           if(is_string)
           {
-            lexical_text += "id ";
+            //lexical_text = lexical_text + "id ";
+            lexical_text = append(lexical_text, "id ");
           }
           else if (isKeyword(lex))
           {
             // lexeme_token_list->push(lex, "keyword");
-            lexical_text += lex + " ";
+            //lexical_text += lex + " ";
+            lexical_text = append(append(lexical_text, lex), " ");
           }
           else if (isInteger(lex))
           {
             // lexeme_token_list->push(lex, "integer");
-            lexical_text += "integer ";
+            //lexical_text += "integer ";
+            lexical_text = append(lexical_text, "integer ");
           }
           else if (isOperator(lex))
           {
             // lexeme_token_list->push(lex, "operator");
-            lexical_text += lex + " ";
+            //lexical_text += lex + " ";
+            lexical_text = append(append(lexical_text, lex), " ");
           }
           else if (isSymbol(lex))
           {
             // lexeme_token_list->push(lex, "symbol");
-            lexical_text += lex + " ";
+            //lexical_text += lex + " ";
+            lexical_text = append(append(lexical_text, lex), " ");
           }
           else
           {
             // lexeme_token_list->push(lex, "id");
-            lexical_text += "id ";
+            //lexical_text += "id ";
+            lexical_text = append(lexical_text, "id ");
           }
         }
 
-        if (text[i] == '.')
+        if (ch == '.')
         {
           // lexeme_token_list->push(".", ".");
-          lexical_text += ". ";
+          //lexical_text += ". ";
+          lexical_text = append(lexical_text, ". ");
         }
-        else if (text[i] == '\"')
+        else if (ch == '\"')
         {
           // lexeme_token_list->push("\"", "\"");
-          lexical_text += "\" ";
+          //lexical_text += "\" ";
+          lexical_text = append(lexical_text, "\" ");
           is_string = !is_string;
         }
-        else if (text[i] == '\'')
+        else if (ch == '\'')
         {
           // lexeme_token_list->push("\'", "\'");
-          lexical_text += "\' ";
+          //lexical_text += "\' ";
+          lexical_text = append(lexical_text, "\' ");
         }
-        else if (text[i] == '(')
+        else if (ch == '(')
         {
           // lexeme_token_list->push("\'", "\'");
-          lexical_text += "( ";
+          //lexical_text += "( ";
+          lexical_text = append(lexical_text, "( ");
         }
-        else if (text[i] == ')')
+        else if (ch == ')')
         {
           // lexeme_token_list->push("\'", "\'");
-          lexical_text += ") ";
+          //lexical_text += ") ";
+          lexical_text = append(lexical_text, ") ");
         }
         lex = "";
       }
       else
       {
-        lex += text[i];
+        //lex += text[i];
+        lex = appendc(lex, ch);
       }
-    }
-  }
-  file.close();
+    
+  } while (ch != EOF);
+
+  fclose(fptr);
   // lexeme_token_list->print();
-  cout << endl;
-  cout << lexical_text << endl;
-  cout << "[Lexical Analysis Completed]" << endl;
+  printf("\n%s\n", lexical_text);
+  printf("[Lexical Analysis Completed]\n");
   all_text = lexical_text;
 
   // Lexical Analysis End
   ////////////////////////////////////////////////////////////////////////////
   // Syntax Analysis Start
 
-  cout << endl
-       << "[Syntax Analysis Started]";
+  printf("\n[Syntax Analysis Started]");
   // shift reduce
   int right = 0;
   int left = 0;
 
-  while (right < all_text.length())
+  while (right < strlen(all_text))
   {
-    cout << endl
-         << "[Stack=$" << all_text.substr(0, right) << "]";
+    printf("\n[Stack=$%s]", substr(all_text, right));
     bool control = true;
     for (int left = 0; left < right; left++)
     {
       do
       {
-        if (grammar->next->data->terminal == all_text.substr(left, right - left))
+        if (strcmp(grammar->next->data->terminal, substrs(all_text, left,  right - left)) == 0)
         {
-          cout << endl
-               << "*Reduce = " << grammar->next->data->nonTerminal << " <-- " << grammar->next->data->terminal << endl;
-          cout << "*New Text = " << all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right) << endl;
-          all_text = all_text.substr(0, left) + grammar->next->data->nonTerminal + all_text.substr(right, all_text.length() - right);
+          all_text = append(substr(all_text, left), append(grammar->next->data->nonTerminal, substrs(all_text, right, strlen(all_text) - right)));
+          printf("\n*Reduce = %s <-- %s\n", grammar->next->data->nonTerminal, grammar->next->data->terminal);
+          printf("*New Text = %s\n", all_text);
           control = false;
           break;
         }
@@ -206,13 +217,10 @@ int main(int argc, char **argv)
       control = true;
     }
   }
-
   if (all_text == "<start> ")
-    cout << endl
-         << "[s][Syntax Analysis Success]" << endl;
+    printf("\n[s][Syntax Analysis Success]\n");
   else
-    cout << endl
-         << "[f][Syntax Error]" << endl;
+    printf("\n[f][Syntax Error]\n");
 
   // Syntax Analysis End
 
@@ -225,21 +233,21 @@ int main(int argc, char **argv)
   return 0;
 }
 
-bool isKeyword(string lex)
+bool isKeyword(char * lex)
 {
   if (
-      lex == "if" ||
-      lex == "else" ||
-      lex == "print" ||
-      lex == "assign" ||
-      lex == "times" ||
-      lex == "variable")
+      !strcmp(lex, "if") ||
+      !strcmp(lex, "else") ||
+      !strcmp(lex, "print") ||
+      !strcmp(lex, "assign") ||
+      !strcmp(lex, "times") ||
+      !strcmp(lex, "variable"))
   {
     return true;
   }
   return false;
 }
-bool isOperator(string lex)
+bool isOperator(char * lex)
 {
   if (
       lex[0] == '+' ||
@@ -251,7 +259,7 @@ bool isOperator(string lex)
   }
   return false;
 }
-bool isSymbol(string lex)
+bool isSymbol(char * lex)
 {
   if (
       lex[0] == '\"' ||
@@ -274,9 +282,9 @@ bool isSymbol(string lex)
   }
   return false;
 }
-bool isInteger(string lex)
+bool isInteger(char * lex)
 {
-  for (int i = 0; i < lex.length(); i++)
+  for (int i = 0; i < strlen(lex); i++)
   {
     if (lex[i] <= '0' || lex[i] >= '9')
     {
