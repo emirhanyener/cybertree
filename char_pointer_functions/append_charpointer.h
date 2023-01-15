@@ -7,6 +7,7 @@ char * append(char * sourcechar, char * appendedchar){
 	for(i = 0; i < strlen(sourcechar); i++){
 		temp[i] = sourcechar[i];
 	}
+	temp[i] = '\0';
 	sourcechar = (char *) malloc ((sizeof(char) * strlen(sourcechar)) + (sizeof(char) * strlen(appendedchar)));
 	for(i = 0; i < strlen(temp); i++){
 		sourcechar[i] = temp[i];
@@ -15,5 +16,22 @@ char * append(char * sourcechar, char * appendedchar){
 		sourcechar[i + strlen(temp)] = appendedchar[i];
 	}
 	sourcechar[strlen(temp) + strlen(appendedchar)] = '\0';
+	return sourcechar;
+}
+
+char * appendc(char * sourcechar, char appendedchar){
+	int i = 0;
+	char temp[strlen(sourcechar)];
+	for(i = 0; i < strlen(sourcechar); i++){
+		temp[i] = sourcechar[i];
+	}
+	temp[i] = '\0';
+	sourcechar = (char *) malloc ((sizeof(char) * strlen(sourcechar)) + (sizeof(char) * 1));
+	for(i = 0; i < strlen(temp); i++){
+		sourcechar[i] = temp[i];
+	}
+	sourcechar[i] = appendedchar;
+	
+	sourcechar[i + 1] = '\0';
 	return sourcechar;
 }
