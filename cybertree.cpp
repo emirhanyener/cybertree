@@ -236,12 +236,12 @@ int main(int argc, char **argv)
 bool isKeyword(char * lex)
 {
   if (
-      !strcmp(lex, "if") ||
-      !strcmp(lex, "else") ||
-      !strcmp(lex, "print") ||
-      !strcmp(lex, "assign") ||
-      !strcmp(lex, "times") ||
-      !strcmp(lex, "variable"))
+      strcmp(lex, "if") == 0 ||
+      strcmp(lex, "else") == 0 ||
+      strcmp(lex, "print") == 0 ||
+      strcmp(lex, "assign") == 0 ||
+      strcmp(lex, "times") == 0 ||
+      strcmp(lex, "variable") == 0)
   {
     return true;
   }
