@@ -36,7 +36,6 @@ print (3 + 4 - 2).
 ```
 
 ## Technologies
-- C++
 - C
 
 ## License
