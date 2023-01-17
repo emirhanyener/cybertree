@@ -1,21 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <iostream>
-#include <fstream>
+#include <stdbool.h>
 #include "grammar_node_data.c"
 #include "grammar_node.c"
 #include "grammar_list.c"
 #include "char_pointer_functions/append_charpointer.h"
 #include "char_pointer_functions/sub_charpointer.h"
-using namespace std;
 
 bool isKeyword(char *);
 bool isOperator(char *);
 bool isSymbol(char *);
 bool isInteger(char *);
 
-grammar_list * grammar = NULL;
+struct grammar_list * grammar = NULL;
 
 int main(int argc, char **argv)
 {
@@ -53,7 +51,7 @@ int main(int argc, char **argv)
   grammarListPush(grammar, createGrammarNodeData((char *)"<math>", (char *)"integer / integer"));
 
   printf("grammar success\n");
-  if (string(argv[1]) == "grammar")
+  if (strcmp(argv[1], "grammar") == 0)
   {
     do
     {
