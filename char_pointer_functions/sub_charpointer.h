@@ -12,7 +12,7 @@ char * substr(char * sourcechar, int length){
 	return temp;
 }
 
-char * substr(const char * sourcechar, int length){
+char * substrc(const char * sourcechar, int length){
 	int i = 0;
 	if(length >= strlen(sourcechar)){
 		length = strlen(sourcechar);
@@ -44,7 +44,7 @@ char * substrs(char * sourcechar, int start, int length){
 	return temp;
 }
 
-char * substrs(const char * sourcechar, int start, int length){
+char * substrsc(const char * sourcechar, int start, int length){
 	int i = 0;
 	
 	if(start >= strlen(sourcechar)){
