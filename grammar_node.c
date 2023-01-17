@@ -1,5 +1,5 @@
 struct grammar_node
 {
-    grammar_node_data * data;
-    grammar_node * next;
+    struct grammar_node_data * data;
+    struct grammar_node * next;
 };

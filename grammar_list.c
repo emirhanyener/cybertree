@@ -3,13 +3,13 @@
 
 struct grammar_list
 {
-    grammar_node * first;
-    grammar_node * next;
+    struct grammar_node * first;
+    struct grammar_node * next;
 };
 
-void grammarListPush(grammar_list * list, grammar_node_data * data)
+void grammarListPush(struct grammar_list * list, struct grammar_node_data * data)
 {
-    grammar_node * newnode = (struct grammar_node *) malloc (sizeof(struct grammar_node));
+    struct grammar_node * newnode = (struct grammar_node *) malloc (sizeof(struct grammar_node));
     newnode->data = data;
     newnode->next = NULL;
 
@@ -20,7 +20,7 @@ void grammarListPush(grammar_list * list, grammar_node_data * data)
     }
     else
     {
-        grammar_node * temp_grammar = list->first;
+        struct grammar_node * temp_grammar = list->first;
         while (temp_grammar->next != NULL)
         {
             temp_grammar = temp_grammar->next;
@@ -28,7 +28,7 @@ void grammarListPush(grammar_list * list, grammar_node_data * data)
         temp_grammar->next = newnode;
     }
 }
-bool grammarListNextNode(grammar_list * list)
+bool grammarListNextNode(struct grammar_list * list)
 {
     if (list->next->next != NULL)
     {
@@ -37,7 +37,7 @@ bool grammarListNextNode(grammar_list * list)
     }
     return false;
 }
-void grammarListFirstNode(grammar_list * list)
+void grammarListFirstNode(struct grammar_list * list)
 {
     list->next = list->first;
 }
